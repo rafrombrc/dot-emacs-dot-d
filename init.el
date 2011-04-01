@@ -1,3 +1,6 @@
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+      (normal-top-level-add-to-load-path '("."))
+      (normal-top-level-add-subdirs-to-load-path))
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
 (setq-default show-trailing-whitespace t)
@@ -153,7 +156,7 @@ by using nxml's indentation rules."
 
 ;;; overlay-fix.el ends here
 
-;; js-mode stuff
+;; javascript-mode stuff
 (autoload 'javascript-mode "javascript" nil t)
 (setq auto-mode-alist
       (cons '("\\.js$" . javascript-mode) auto-mode-alist))
