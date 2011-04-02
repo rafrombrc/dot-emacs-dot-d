@@ -3,6 +3,7 @@
       (normal-top-level-add-subdirs-to-load-path))
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
+(setq-default fill-column 79)
 (setq-default show-trailing-whitespace t)
 
 (global-set-key [(control \.)] 'goto-line)
@@ -19,7 +20,6 @@
 (set-cursor-color "white")
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
-(set-fill-column 79)
 (setq-default indent-tabs-mode nil)
 (global-set-key [(control \.)] 'goto-line)
 
