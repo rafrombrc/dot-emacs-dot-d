@@ -68,7 +68,18 @@ by using nxml's indentation rules."
  '(flymake-warnline ((((class color)) (:underline "yellow"))))
  )
 
-;; javascript-mode stuff
+;; Associate various HTML templating languages w/ html-mode
+(setq auto-mode-alist
+      (cons '("\\.pt$" . html-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.mako$" . html-mode) auto-mode-alist))
+
+;; Associate .rst and .rest extensions w/ rst-mode
+(setq auto-mode-alist
+      (append '(("\\.rst$" . rst-mode)
+                ("\\.rest$" . rst-mode)) auto-mode-alist))
+
+;; Load javascript mode and associate w/ js and json files
 (autoload 'javascript-mode "javascript" nil t)
 (setq auto-mode-alist
       (cons '("\\.js$" . javascript-mode) auto-mode-alist))
