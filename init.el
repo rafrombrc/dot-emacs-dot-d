@@ -158,6 +158,14 @@ by using nxml's indentation rules."
 ;;; overlay-fix.el ends here
 
 
+;; javascript-mode stuff
+(autoload 'javascript-mode "javascript" nil t)
+(setq auto-mode-alist
+      (cons '("\\.js$" . javascript-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.json$" . javascript-mode) auto-mode-alist))
+
+
 ;;(require 'pycomplete)
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
