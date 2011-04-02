@@ -121,7 +121,7 @@ by using nxml's indentation rules."
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;; 
+;;
 ;; This library advices the built-in functions `make-overlay' and
 ;; `overlay-put' to ensure that the overlay 'face property is never
 ;; nil but `overlay-empty-face' instead.  In Emacs versions before 21
@@ -130,7 +130,7 @@ by using nxml's indentation rules."
 ;; is not syntax highlighted.
 
 ;;; History:
-;; 
+;;
 
 ;;; Code:
 (if (or (featurep 'xemacs) (> emacs-major-version 20))
@@ -150,19 +150,13 @@ by using nxml's indentation rules."
     (and (eq (ad-get-arg 1) 'face)
          (null (ad-get-arg 2))
          (ad-set-arg 2 'overlay-empty-face)))
-  
+
   )
 
 (provide 'overlay-fix)
 
 ;;; overlay-fix.el ends here
 
-;; javascript-mode stuff
-(autoload 'javascript-mode "javascript" nil t)
-(setq auto-mode-alist
-      (cons '("\\.js$" . javascript-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 
 ;;(require 'pycomplete)
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
@@ -212,16 +206,16 @@ by using nxml's indentation rules."
 
 ;; flymake pyflakes stuff
 (when (load "flymake" t)
-  (defun flymake-pyflakes-init () 
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy 
-                       'flymake-create-temp-inplace)) 
-           (local-file (file-relative-name 
-                        temp-file 
-                        (file-name-directory buffer-file-name)))) 
-      (list "pyflakes" (list local-file)))) 
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
 
-  (add-to-list 'flymake-allowed-file-name-masks 
-               '("\\.py\\'" flymake-pyflakes-init))) 
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
 
 (add-hook 'find-file-hook 'flymake-find-file-hook)
 
@@ -266,4 +260,4 @@ cursor is sitting on a flymake error the error information is
 displayed in the minibuffer (rather than having to mouse over
 it)"
   (set (make-local-variable 'post-command-hook)
-       (cons 'show-fly-err-at-point post-command-hook))) 
+       (cons 'show-fly-err-at-point post-command-hook)))
