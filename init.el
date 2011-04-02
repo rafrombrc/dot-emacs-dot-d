@@ -1,8 +1,3 @@
-;;(setenv "PYTHONPATH" "/Library/Python/2.6/site-packages")
-(setq exec-path (append exec-path '("/usr/local/bin")))
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'hyper)
-
 (let ((default-directory "~/.emacs.d/site-lisp/"))
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
