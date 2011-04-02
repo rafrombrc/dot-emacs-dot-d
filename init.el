@@ -19,7 +19,7 @@
 (set-cursor-color "white")
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
-(set-fill-column 75)
+(set-fill-column 79)
 (setq-default indent-tabs-mode nil)
 (global-set-key [(control \.)] 'goto-line)
 
