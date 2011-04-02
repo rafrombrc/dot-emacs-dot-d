@@ -49,6 +49,7 @@ by using nxml's indentation rules."
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
+; Associate .rst and .rest extensions w/ rst-mode
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
                 ("\\.rest$" . rst-mode)) auto-mode-alist))
