@@ -57,8 +57,6 @@ by using nxml's indentation rules."
 
 ; Indent c code four spaces
 (setq c-basic-offset 4)
-; Associate c-mode with the .js extension
-; (setq auto-mode-alist (append '(("\\.js$" . c-mode)) auto-mode-alist))
 
 ;; Options Menu Settings
 ;; =====================
