@@ -45,7 +45,6 @@ by using nxml's indentation rules."
 (require 'css-mode)
 (require 'doctest-mode)
 (require 'rst)
-(require 'php-mode)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
