@@ -1,32 +1,33 @@
+;;(setenv "PYTHONPATH" "/Library/Python/2.6/site-packages")
+(setq exec-path (append exec-path '("/usr/local/bin")))
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'hyper)
+
 (let ((default-directory "~/.emacs.d/site-lisp/"))
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
-(setq-default transient-mark-mode t)
-(setq-default auto-fill-mode t)
-(setq-default fill-column 79)
-(setq-default show-trailing-whitespace t)
 
 (global-set-key [(control \.)] 'goto-line)
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
 
-;;(set-face-font 'default "fontset-standard")
-;;(set-fontset-font "fontset-default"
-;;		  'latin-iso8859-1
-;;		  "-Misc-Fixed-Medium-R-Normal--14-130-75-75-C-70-ISO8859-1")
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
 (set-foreground-color "white")
 (set-cursor-color "white")
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
+
 (setq-default indent-tabs-mode nil)
-(global-set-key [(control \.)] 'goto-line)
+(setq-default transient-mark-mode t)
+(setq-default auto-fill-mode t)
+(setq-default fill-column 79)
+(setq-default show-trailing-whitespace t)
 
 (setq grep-command "grep -rn ")
+(setq c-basic-offset 4) ; Indent c code four spaces
 
-(require 'column-marker)
-(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80)))
+(put 'upcase-region 'disabled nil)
 
 (defun bf-pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -49,36 +50,6 @@ by using nxml's indentation rules."
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
-; Associate .rst and .rest extensions w/ rst-mode
-(setq auto-mode-alist
-      (append '(("\\.rst$" . rst-mode)
-                ("\\.rest$" . rst-mode)) auto-mode-alist))
-
-
-; Indent c code four spaces
-(setq c-basic-offset 4)
-
-;; Options Menu Settings
-;; =====================
-(cond
- ((and (string-match "XEmacs" emacs-version)
-       (boundp 'emacs-major-version)
-       (or (and
-            (= emacs-major-version 19)
-            (>= emacs-minor-version 14))
-           (= emacs-major-version 20))
-       (fboundp 'load-options-file))
-  (load-options-file "/home/rob/.xemacs-options")))
-;; ============================
-;; End of Options Menu Settings
-
-;; load oo-browser
-;; (setq load-path (append
-;;                  '("/home/rob/src/oo-browser/"
-;;                    "/home/rob/src/oo-browser/hypb/")
-;;                  load-path))
-;; (load "br-start")
-;; (global-set-key "\C-c\C-o" 'oo-browser)
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -102,40 +73,16 @@ by using nxml's indentation rules."
 (setq auto-mode-alist
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 
-;;(require 'pycomplete)
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
+(require 'pymacs)
 (autoload 'pymacs-load "pymacs" nil t)
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (setq interpreter-mode-alist(cons '("python" . python-mode)
                              interpreter-mode-alist))
-
-(require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
-
-(setq auto-mode-alist
-      (cons '("\\.dtml$" . html-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.pt$" . html-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.cpt$" . html-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.zcml$" . xml-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.mako$" . html-mode) auto-mode-alist))
-
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-(setq auto-mode-alist
-      (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.cpy$" . python-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.vpy$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist
-      (cons '("python" . python-mode)
-	    interpreter-mode-alist))
 
 
 (cond ((fboundp 'global-font-lock-mode)
@@ -144,8 +91,6 @@ by using nxml's indentation rules."
        ;; Maximum colors
        (setq font-lock-maximum-decoration t)))
 
-
-(put 'upcase-region 'disabled nil)
 
 
 ;; flymake pyflakes stuff
