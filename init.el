@@ -50,6 +50,8 @@ by using nxml's indentation rules."
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
+(require 'column-marker)
+(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80)))
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
