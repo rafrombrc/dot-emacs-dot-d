@@ -18,6 +18,7 @@
 (setq-default auto-fill-mode t)
 (setq-default fill-column 79)
 (setq-default show-trailing-whitespace t)
+(setq-default javascript-indent-level 2)
 
 (setq grep-command "grep -rn ")
 (setq c-basic-offset 4) ; Indent c code four spaces
@@ -109,7 +110,7 @@ by using nxml's indentation rules."
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
+      (list "flake8" (list local-file))))
 
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
