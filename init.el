@@ -22,6 +22,7 @@
 (setq-default auto-fill-mode t)
 (setq-default fill-column 79)
 (setq-default show-trailing-whitespace t)
+(setq-default javascript-indent-level 2)
 
 (setq grep-command "grep -rn ")
 (setq c-basic-offset 4) ; Indent c code four spaces
