@@ -27,6 +27,7 @@
 (setq-default javascript-indent-level 2)
 
 (setq grep-command "grep -rn ")
+(setq grep-find-ignored-directories '(".hg" ".git"))
 (setq c-basic-offset 4) ; Indent c code four spaces
 
 (put 'upcase-region 'disabled nil)
