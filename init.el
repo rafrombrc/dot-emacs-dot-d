@@ -10,6 +10,8 @@
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
 
+(global-auto-revert-mode)
+
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
 (set-foreground-color "white")
