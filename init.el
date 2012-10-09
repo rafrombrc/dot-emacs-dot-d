@@ -1,10 +1,15 @@
-(setq exec-path (append exec-path '("/usr/local/bin")))
+(setq exec-path (append exec-path '("/opt/local/bin")))
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'hyper)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
+
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "./ac-dict")
+(ac-config-default)
 
 (global-set-key [(control \.)] 'goto-line)
 (global-set-key "\C-h" 'delete-backward-char)
