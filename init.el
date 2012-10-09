@@ -49,6 +49,7 @@ by using nxml's indentation rules."
 (require 'css-mode)
 (require 'doctest-mode)
 (require 'rst)
+(require 'go-mode-load)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
