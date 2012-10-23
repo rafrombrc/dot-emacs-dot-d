@@ -819,7 +819,7 @@ Replace the current buffer on success; display errors on failure."
   (require 'diff-mode)
   ;; apply all the patch hunks
   (with-current-buffer patchbuf
-    (replace-regexp "^--- /tmp/gofmt[0-9]*" (concat "--- " filename)
+    (replace-regexp "^--- /var/folders/.*/gofmt[0-9]*" (concat "--- " filename)
                       nil (point-min) (point-max))
     (condition-case nil
         (while t
