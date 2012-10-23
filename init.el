@@ -104,7 +104,6 @@ by using nxml's indentation rules."
 (autoload 'pymacs-call "pymacs")
 (setq interpreter-mode-alist(cons '("python" . python-mode)
                              interpreter-mode-alist))
-(pymacs-load "ropemacs" "rope-")
 
 
 (cond ((fboundp 'global-font-lock-mode)
