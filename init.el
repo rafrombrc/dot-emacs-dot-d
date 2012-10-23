@@ -15,6 +15,7 @@
 (ac-config-default)
 
 (global-set-key [(control \.)] 'goto-line)
+(global-set-key [(control \,)] 'compile)
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
 
@@ -23,10 +24,12 @@
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
 (set-foreground-color "white")
+(set-default 'cursor-type 'box)
 (set-cursor-color "white")
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
 
+(setq default-tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
