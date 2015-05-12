@@ -9,15 +9,42 @@
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
 
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "./ac-dict")
-(ac-config-default)
+(add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
+(require 'rust-mode)
+
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+
+(require 'desktop)
+(desktop-save-mode 1)
+(defun my-desktop-save ()
+  (interactive)
+  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+(add-hook 'auto-save-hook 'my-desktop-save)
+
+(defun go-mode-setup ()
+  (go-eldoc-setup)
+  (setq gofmt-command "goimports")
+  (git-gutter-mode t)
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  (tabbar-mode)
+  (add-hook 'before-save-hook 'gofmt-before-save))
+
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+(setq history-length 250)
+(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 (global-set-key [(control \.)] 'goto-line)
 (global-set-key [(control \,)] 'compile)
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
+(global-set-key (kbd "C-/") 'comment-line)
 
 (global-auto-revert-mode)
 
@@ -60,7 +87,11 @@ by using nxml's indentation rules."
 (require 'css-mode)
 (require 'doctest-mode)
 (require 'rst)
+(require 'go-mode)
 (require 'go-mode-load)
+(require 'auto-complete-config)
+(require 'go-autocomplete)
+(require 'dirtree)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
@@ -69,17 +100,20 @@ by using nxml's indentation rules."
 (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80)))
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (neotree tabbar revive go-eldoc git-gutter dirtree)))
  '(safe-local-variable-values (quote ((encoding . utf8))))
+ '(save-place t nil (saveplace))
+ '(show-paren-mode t)
  '(user-mail-address "rob@kalistra.com"))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(flymake-errline ((((class color)) (:underline "OrangeRed"))))
  '(flymake-warnline ((((class color)) (:underline "yellow")))))
 
