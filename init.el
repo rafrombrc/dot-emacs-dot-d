@@ -12,7 +12,6 @@
 (add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
 (require 'rust-mode)
 
-
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -47,6 +46,7 @@
 (global-set-key (kbd "C-/") 'comment-line)
 
 (global-auto-revert-mode)
+(electric-pair-mode)
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
@@ -67,6 +67,7 @@
 (setq grep-command "grep -rn ")
 (setq grep-find-ignored-directories '(".hg" ".git"))
 (setq c-basic-offset 4) ; Indent c code four spaces
+(setq lua-indent-level 4) ; Indent lua code four spaces
 
 (put 'upcase-region 'disabled nil)
 
@@ -106,7 +107,7 @@ by using nxml's indentation rules."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (lua-mode neotree tabbar revive go-eldoc git-gutter dirtree)))
+    (flymake-lua lua-mode neotree tabbar revive go-eldoc git-gutter dirtree)))
  '(safe-local-variable-values (quote ((encoding . utf8))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
