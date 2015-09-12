@@ -51,8 +51,6 @@
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
 (set-foreground-color "white")
-(set-default 'cursor-type 'box)
-(set-cursor-color "white")
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
 
@@ -229,3 +227,6 @@ displayed in the minibuffer (rather than having to mouse over
 it)"
   (set (make-local-variable 'post-command-hook)
        (cons 'show-fly-err-at-point post-command-hook)))
+
+(set-default 'cursor-type 'box)
+(setq default-frame-alist '((cursor-color . "white")))

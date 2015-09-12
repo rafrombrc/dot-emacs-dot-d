@@ -5,3 +5,4 @@ session.*
 *.lock
 *~
 *.dat
+/.DS_Store
