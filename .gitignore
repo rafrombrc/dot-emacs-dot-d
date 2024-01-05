@@ -6,3 +6,5 @@ session.*
 *~
 *.dat
 /.DS_Store
+tramp
+elpa/*

@@ -1,5 +1,3 @@
-(setq exec-path (append exec-path '("/opt/local/bin")))
-(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq mac-command-modifier 'meta)
@@ -9,13 +7,13 @@
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
 
-(add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
-(require 'rust-mode)
-
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
+
+(add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
+(require 'rust-mode)
 
 (require 'desktop)
 (desktop-save-mode 1)
@@ -33,8 +31,11 @@
   (local-set-key (kbd "RET") 'newline-and-indent)
   (tabbar-mode)
   (add-hook 'before-save-hook 'gofmt-before-save))
-
 (add-hook 'go-mode-hook 'go-mode-setup)
+
+(defun lua-mode-setup ()
+  (git-gutter-mode t))
+(add-hook 'lua-mode-hook 'lua-mode-setup)
 
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -46,7 +47,8 @@
 (global-set-key (kbd "C-/") 'comment-line)
 
 (global-auto-revert-mode)
-(electric-pair-mode)
+; (electric-pair-mode)
+; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
@@ -55,7 +57,7 @@
 (set-face-foreground 'default' "white")
 
 (setq default-tab-width 4)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
 (setq-default fill-column 79)
@@ -92,11 +94,25 @@ by using nxml's indentation rules."
 (require 'go-autocomplete)
 (require 'dirtree)
 
+(require 'markdown-mode)
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+(setq auto-mode-alist
+      (cons '("\\.md$" . markdown-mode) auto-mode-alist))
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
 (require 'column-marker)
 (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80)))
+
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq python-indent 8)
+	    (setq tab-width 4)))
+
+;; (require 'blacken)
+;; (add-hook 'python-mode-hook 'blacken-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -104,19 +120,11 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (flymake-lua lua-mode neotree tabbar revive go-eldoc git-gutter dirtree)))
- '(safe-local-variable-values (quote ((encoding . utf8))))
+   '(xml-format flycheck-pyflakes flycheck go-scratch lua-mode neotree tabbar revive go-eldoc git-gutter dirtree))
+ '(safe-local-variable-values '((encoding . utf8)))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(user-mail-address "rob@kalistra.com"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flymake-errline ((((class color)) (:underline "OrangeRed"))))
- '(flymake-warnline ((((class color)) (:underline "yellow")))))
 
 ;; Associate various HTML templating languages w/ html-mode
 (setq auto-mode-alist
@@ -154,79 +162,21 @@ by using nxml's indentation rules."
        (setq font-lock-maximum-decoration t)))
 
 
-
-;; flymake pyflakes stuff
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "flake8" (list local-file))))
-
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
-
-(add-hook 'find-file-hook 'flymake-find-file-hook)
-
-;; Flymake HTML support
-    (defun flymake-html-init ()
-      (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                         'flymake-create-temp-inplace))
-             (local-file (file-relative-name
-                          temp-file
-                          (file-name-directory buffer-file-name))))
-        (list "tidy" (list local-file))))
-
-    (add-to-list 'flymake-allowed-file-name-masks
-                 '("\\.html$\\|\\.ctp" flymake-html-init))
-
-    (add-to-list 'flymake-err-line-patterns
-                 '("line \\([0-9]+\\) column \\([0-9]+\\) - \\(Warning\\|Error\\): \\(.*\\)"
-                   nil 1 2 4))
-
-;; Additional functionality that makes flymake error messages appear
-;; in the minibuffer when point is on a line containing a flymake
-;; error. This saves having to mouse over the error, which is a
-;; keyboard user's annoyance
-
-;;flymake-ler(file line type text &optional full-file)
-(defun show-fly-err-at-point ()
-  "If the cursor is sitting on a flymake error, display the
-message in the minibuffer"
-  (interactive)
-  (let ((line-no (line-number-at-pos)))
-    (dolist (elem flymake-err-info)
-      (if (eq (car elem) line-no)
-	  (let ((err (car (second elem))))
-	    (message "%s" (fly-pyflake-determine-message err)))))))
-
-(defun fly-pyflake-determine-message (err)
-  "pyflake is flakey if it has compile problems, this adjusts the
-message to display, so there is one ;)"
-  (cond ((not (or (eq major-mode 'Python) (eq major-mode 'python-mode) t)))
-	((null (flymake-ler-file err))
-	 ;; normal message do your thing
-	 (flymake-ler-text err))
-	(t ;; could not compile err
-	 (format "compile error, problem on line %s" (flymake-ler-line err)))))
-
-(defadvice flymake-goto-next-error (after display-message activate compile)
-  "Display the error in the mini-buffer rather than having to mouse over it"
-  (show-fly-err-at-point))
-
-(defadvice flymake-goto-prev-error (after display-message activate compile)
-  "Display the error in the mini-buffer rather than having to mouse over it"
-  (show-fly-err-at-point))
-
-(defadvice flymake-mode (before post-command-stuff activate compile)
-  "Add functionality to the post command hook so that if the
-cursor is sitting on a flymake error the error information is
-displayed in the minibuffer (rather than having to mouse over
-it)"
-  (set (make-local-variable 'post-command-hook)
-       (cons 'show-fly-err-at-point post-command-hook)))
+(require 'flycheck-pyflakes)
+(add-hook 'python-mode-hook 'flycheck-mode)
+(add-to-list 'flycheck-disabled-checkers 'python-flake8)
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
 (set-default 'cursor-type 'box)
 (setq default-frame-alist '((cursor-color . "white")))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(global-set-key "\C-xp" (lambda ()
+                          (interactive)
+                          (other-window -1)))
