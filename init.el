@@ -47,8 +47,12 @@
 (global-set-key (kbd "C-/") 'comment-line)
 
 (global-auto-revert-mode)
-; (electric-pair-mode)
-; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+
+(electric-pair-mode)
+(setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+; (setq electric-pair-inhibit-predicate
+;       (lambda (c)
+;         (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
