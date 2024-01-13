@@ -49,7 +49,13 @@
 (global-auto-revert-mode)
 
 (electric-pair-mode)
-(setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+(setq-default electric-pair-inhibit-predicate
+              (lambda (c)
+                (if (looking-at "[ \n\t]")
+                    (electric-pair-default-inhibit c)
+                  t)))
+
+; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 ; (setq electric-pair-inhibit-predicate
 ;       (lambda (c)
 ;         (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
@@ -107,16 +113,6 @@ by using nxml's indentation rules."
 (setq uniquify-buffer-name-style 'post-forward)
 
 (require 'column-marker)
-(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80)))
-
-(add-hook 'python-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode t)
-	    (setq python-indent 8)
-	    (setq tab-width 4)))
-
-;; (require 'blacken)
-;; (add-hook 'python-mode-hook 'blacken-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -124,7 +120,7 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(xml-format flycheck-pyflakes flycheck go-scratch lua-mode neotree tabbar revive go-eldoc git-gutter dirtree))
+   '(jedi xml-format flycheck-pyflakes flycheck go-scratch lua-mode neotree tabbar revive go-eldoc git-gutter dirtree))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
@@ -148,6 +144,9 @@ by using nxml's indentation rules."
 (setq auto-mode-alist
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 
+
+
+;; Load python-mode and other complementary tools
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
 (require 'pymacs)
@@ -156,7 +155,27 @@ by using nxml's indentation rules."
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (setq interpreter-mode-alist(cons '("python" . python-mode)
-                             interpreter-mode-alist))
+				  interpreter-mode-alist))
+
+(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
+
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq python-indent 8)
+	    (setq tab-width 4)))
+
+(require 'flycheck-pyflakes)
+(add-hook 'python-mode-hook 'flycheck-mode)
+(add-to-list 'flycheck-disabled-checkers 'python-flake8)
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+
+;; (require 'blacken)
+;; (add-hook 'python-mode-hook 'blacken-mode)
+
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+
 
 
 (cond ((fboundp 'global-font-lock-mode)
@@ -165,11 +184,6 @@ by using nxml's indentation rules."
        ;; Maximum colors
        (setq font-lock-maximum-decoration t)))
 
-
-(require 'flycheck-pyflakes)
-(add-hook 'python-mode-hook 'flycheck-mode)
-(add-to-list 'flycheck-disabled-checkers 'python-flake8)
-(add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
 (set-default 'cursor-type 'box)
 (setq default-frame-alist '((cursor-color . "white")))
