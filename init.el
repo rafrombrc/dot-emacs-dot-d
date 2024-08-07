@@ -7,10 +7,10 @@
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
 
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
+(setq package-check-signature nil)
+(unless package-archive-contents
+  (package-refresh-contents))
+(package-install-selected-packages)
 
 (add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
 (require 'rust-mode)
@@ -121,13 +121,11 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(magit git-gutter xml-format flycheck lua-mode neotree tabbar dirtree))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place t nil (saveplace))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
- '(user-mail-address "rob@kalistra.com"))
+ '(user-mail-address "rob@nonsequitarian.org"))
 
 (global-git-gutter-mode +1)
 
