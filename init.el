@@ -9,7 +9,7 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+	     '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 (add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
@@ -27,15 +27,14 @@
 (defun go-mode-setup ()
   (go-eldoc-setup)
   (setq gofmt-command "goimports")
-  (git-gutter-mode t)
   (local-set-key (kbd "RET") 'newline-and-indent)
   (tabbar-mode)
   (add-hook 'before-save-hook 'gofmt-before-save))
 (add-hook 'go-mode-hook 'go-mode-setup)
 
-(defun lua-mode-setup ()
-  (git-gutter-mode t))
-(add-hook 'lua-mode-hook 'lua-mode-setup)
+;; (defun lua-mode-setup ()
+;;   (git-gutter-mode t))
+;; (add-hook 'lua-mode-hook 'lua-mode-setup)
 
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -50,15 +49,16 @@
 
 (electric-pair-mode)
 (setq-default electric-pair-inhibit-predicate
-              (lambda (c)
-                (if (looking-at "[ \n\t]")
-                    (electric-pair-default-inhibit c)
-                  t)))
+	      (lambda (c)
+		(if (looking-at "[ \n\t]")
+		    (electric-pair-default-inhibit c)
+		  t)))
+(setq-default electric-pair-preserve-balance 1)
 
-; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-; (setq electric-pair-inhibit-predicate
-;       (lambda (c)
-;         (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
+;; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+;; (setq electric-pair-inhibit-predicate
+;; 	(lambda (c)
+;; 	  (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
@@ -73,6 +73,8 @@
 (setq-default fill-column 79)
 (setq-default show-trailing-whitespace t)
 (setq-default javascript-indent-level 2)
+
+(setq-default visible-bell "yes")
 
 (setq grep-command "grep -rn ")
 (setq grep-find-ignored-directories '(".hg" ".git"))
@@ -91,7 +93,7 @@ by using nxml's indentation rules."
   (save-excursion
       (goto-char begin)
       (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-        (backward-char) (insert "\n"))
+	(backward-char) (insert "\n"))
       (indent-region begin end))
     (message "Ah, much better!"))
 
@@ -120,11 +122,14 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(jedi xml-format flycheck-pyflakes flycheck go-scratch lua-mode neotree tabbar revive go-eldoc git-gutter dirtree))
+   '(magit git-gutter xml-format flycheck lua-mode neotree tabbar dirtree))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place t nil (saveplace))
+ '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
  '(user-mail-address "rob@kalistra.com"))
+
+(global-git-gutter-mode +1)
 
 ;; Associate various HTML templating languages w/ html-mode
 (setq auto-mode-alist
@@ -135,7 +140,7 @@ by using nxml's indentation rules."
 ;; Associate .rst and .rest extensions w/ rst-mode
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
-                ("\\.rest$" . rst-mode)) auto-mode-alist))
+		("\\.rest$" . rst-mode)) auto-mode-alist))
 
 ;; Load javascript mode and associate w/ js and json files
 (autoload 'javascript-mode "javascript" nil t)
@@ -159,6 +164,7 @@ by using nxml's indentation rules."
 
 (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
+
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (setq indent-tabs-mode t)
@@ -167,6 +173,7 @@ by using nxml's indentation rules."
 
 (require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
+(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
 (add-to-list 'flycheck-disabled-checkers 'python-flake8)
 (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
@@ -196,5 +203,5 @@ by using nxml's indentation rules."
  )
 
 (global-set-key "\C-xp" (lambda ()
-                          (interactive)
-                          (other-window -1)))
+			  (interactive)
+			  (other-window -1)))
