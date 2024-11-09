@@ -9,3 +9,5 @@ session.*
 tramp
 elpa/*
 /transient/
+/tree-sitter/
+/places
