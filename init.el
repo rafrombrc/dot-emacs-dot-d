@@ -24,17 +24,43 @@
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
 
-(defun go-mode-setup ()
-  (go-eldoc-setup)
-  (setq gofmt-command "goimports")
-  (local-set-key (kbd "RET") 'newline-and-indent)
-  (tabbar-mode)
-  (add-hook 'before-save-hook 'gofmt-before-save))
-(add-hook 'go-mode-hook 'go-mode-setup)
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode)
+)
 
-;; (defun lua-mode-setup ()
-;;   (git-gutter-mode t))
-;; (add-hook 'lua-mode-hook 'lua-mode-setup)
+(setq treesit-language-source-alist
+      '((go "https://github.com/tree-sitter/tree-sitter-go")
+	(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
+)
+
+(setq major-mode-remap-alist
+      '((go-mode . go-ts-mode))
+)
+
+(use-package go-ts-mode
+  :hook
+  ;; (go-ts-mode . lsp-deferred)
+  (go-ts-mode . go-format-on-save-mode)
+  :init
+  (add-to-list 'treesit-language-source-alist
+	       '(go "https://github.com/tree-sitter/tree-sitter-go"))
+  (add-to-list 'treesit-language-source-alist
+	       '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
+  (dolist (lang '(go gomod)) (treesit-install-language-grammar lang))
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+  (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
+  (setq go-ts-mode-indent-offset 4)
+  (setq tab-width 4)
+  :config
+  (reformatter-define go-format
+    :program "gofmt"
+    :args '("/dev/stdin"))
+  )
+(add-hook 'go-ts-mode-hook 'eglot-ensure)
 
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -44,6 +70,10 @@
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
 (global-set-key (kbd "C-/") 'comment-line)
+
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "<tab>") 'company-complete)
+  (define-key company-active-map (kbd "ESC") 'company-abort))
 
 (global-auto-revert-mode)
 
@@ -100,10 +130,7 @@ by using nxml's indentation rules."
 (require 'css-mode)
 (require 'doctest-mode)
 (require 'rst)
-(require 'go-mode)
-(require 'go-mode-load)
-(require 'auto-complete-config)
-(require 'go-autocomplete)
+;; (require 'auto-complete-config)
 (require 'dirtree)
 
 (require 'markdown-mode)
@@ -121,8 +148,13 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-backends
+   '(company-bbdb company-semantic company-cmake company-capf company-clang company-files
+				  (company-capf company-dabbrev-code company-gtags company-etags company-keywords)
+				  company-oddmuse company-dabbrev))
+ '(package-selected-packages
+   '(company treesit-auto go-autocomplete python-mode magit git-gutter xml-format flycheck flycheck-pyflakes lua-mode neotree tabbar dirtree markdown-mode popup))
  '(safe-local-variable-values '((encoding . utf8)))
- '(save-place t nil (saveplace))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
  '(user-mail-address "rob@nonsequitarian.org"))
@@ -146,7 +178,6 @@ by using nxml's indentation rules."
       (cons '("\\.js$" . javascript-mode) auto-mode-alist))
 (setq auto-mode-alist
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
-
 
 
 ;; Load python-mode and other complementary tools
@@ -178,17 +209,11 @@ by using nxml's indentation rules."
 ;; (require 'blacken)
 ;; (add-hook 'python-mode-hook 'blacken-mode)
 
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)
-
-
-
 (cond ((fboundp 'global-font-lock-mode)
        ;; Turn on font-lock in all modes that support it
        (global-font-lock-mode t)
        ;; Maximum colors
        (setq font-lock-maximum-decoration t)))
-
 
 (set-default 'cursor-type 'box)
 (setq default-frame-alist '((cursor-color . "white")))
