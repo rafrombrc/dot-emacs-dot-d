@@ -41,6 +41,8 @@
       '((go-mode . go-ts-mode))
 )
 
+(setq indent-tabs-mode t)
+
 (use-package go-ts-mode
   :hook
   ;; (go-ts-mode . lsp-deferred)
@@ -196,8 +198,8 @@ by using nxml's indentation rules."
 
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (setq indent-tabs-mode t)
-	    (setq python-indent 8)
+	    (setq indent-tabs-mode 'only)
+	    (setq python-indent 4)
 	    (setq tab-width 4)))
 
 (require 'flycheck-pyflakes)
