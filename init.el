@@ -154,8 +154,6 @@ by using nxml's indentation rules."
    '(company-bbdb company-semantic company-cmake company-capf company-clang company-files
 				  (company-capf company-dabbrev-code company-gtags company-etags company-keywords)
 				  company-oddmuse company-dabbrev))
- '(package-selected-packages
-   '(company treesit-auto go-autocomplete python-mode magit git-gutter xml-format flycheck flycheck-pyflakes lua-mode neotree tabbar dirtree markdown-mode popup))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
@@ -182,31 +180,27 @@ by using nxml's indentation rules."
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 
 
+(require 'python-mode)
+
 ;; Load python-mode and other complementary tools
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(autoload 'python-mode "python-mode" "Python editing mode." t)
-(require 'pymacs)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(setq interpreter-mode-alist(cons '("python" . python-mode)
-				  interpreter-mode-alist))
+;;(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+;;(autoload 'python-mode "python-mode" "Python editing mode." t)
+;;(setq interpreter-mode-alist(cons '("python" . python-mode)
+;;				  interpreter-mode-alist))
 
-(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
+;;(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
+;; (add-hook 'python-mode-hook
+;; 	  (lambda ()
+;; 	    (setq indent-tabs-mode t)
+;; 	    (setq python-indent 8)
+;; 	    (setq tab-width 4)))
 
-(add-hook 'python-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode 'only)
-	    (setq python-indent 4)
-	    (setq tab-width 4)))
-
-(require 'flycheck-pyflakes)
-(add-hook 'python-mode-hook 'flycheck-mode)
-(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
-(add-to-list 'flycheck-disabled-checkers 'python-flake8)
-(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+;; (require 'flycheck-pyflakes)
+;; (add-hook 'python-mode-hook 'flycheck-mode)
+;; (add-hook 'python-mode-hook 'tabify (point-min) (point-max))
+;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+;; (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
 ;; (require 'blacken)
 ;; (add-hook 'python-mode-hook 'blacken-mode)

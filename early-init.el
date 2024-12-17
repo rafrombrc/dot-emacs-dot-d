@@ -14,5 +14,10 @@
 			      tabbar
 			      dirtree
 			      markdown-mode
+			      python-mode
+			      company
+			      popup
+			      treesit-auto
+			      go-autocomplete
 			      ))
 (package-initialize)
