@@ -4,20 +4,24 @@
   package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                      ("melpa" . "https://melpa.org/packages/"))
   ;; packages to have installed
-  package-selected-packages '(magit
-                              git-gutter
-			      xml-format
+  package-selected-packages '(
+			      blacken
+			      company
+			      desktop
+			      dirtree
 			      flycheck
 			      flycheck-pyflakes
-			      lua-mode
-			      neotree
-			      tabbar
-			      dirtree
-			      markdown-mode
-			      python-mode
-			      company
-			      popup
-			      treesit-auto
 			      go-autocomplete
+			      lua-mode
+			      magit
+			      markdown-mode
+			      neotree
+			      outline-indent
+			      popup
+			      python-mode
+			      rust-mode
+			      tabbar
+			      xml-format
+                              git-gutter
 			      ))
 (package-initialize)

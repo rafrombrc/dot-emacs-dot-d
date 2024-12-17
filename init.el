@@ -7,13 +7,12 @@
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
 
-(setq package-check-signature nil)
+;; (setq package-check-signature nil)
 (unless package-archive-contents
   (package-refresh-contents))
 (package-install-selected-packages)
 
-(add-to-list 'load-path "/home/rob/.emacs.d/site-lisp/rust-mode/")
-(require 'rust-mode)
+(require 'column-marker)
 
 (require 'desktop)
 (desktop-save-mode 1)
@@ -24,45 +23,34 @@
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
 
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode)
-)
+(use-package outline-indent
+  :commands (outline-indent-minor-mode
+	     outline-indent-insert-heading)
+  :hook ((python-mode . outline-indent-minor-mode)
+         (python-ts-mode . outline-indent-minor-mode))
+  :custom (outline-indent-ellipsis " ▼ "))
 
-(setq treesit-language-source-alist
-      '((go "https://github.com/tree-sitter/tree-sitter-go")
-	(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
-)
+(require 'python-mode)
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(defun set-python-tabs ()
+     (setq tab-width 4)
+     (setq python-indent-offset 4)
+     (setq indent-tabs-mode t)
+     (setq py-indent-tabs-mode t))
+(add-hook 'python-mode-hook 'set-python-tabs)
+(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
 
-(setq major-mode-remap-alist
-      '((go-mode . go-ts-mode))
-)
+(require 'flycheck-pyflakes)
+(add-hook 'python-mode-hook 'flycheck-mode)
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
+(require 'blacken)
+(add-hook 'python-mode-hook 'blacken-mode)
 
-(setq indent-tabs-mode t)
-
-(use-package go-ts-mode
-  :hook
-  ;; (go-ts-mode . lsp-deferred)
-  (go-ts-mode . go-format-on-save-mode)
-  :init
-  (add-to-list 'treesit-language-source-alist
-	       '(go "https://github.com/tree-sitter/tree-sitter-go"))
-  (add-to-list 'treesit-language-source-alist
-	       '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
-  (dolist (lang '(go gomod)) (treesit-install-language-grammar lang))
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
-  (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
-  (setq go-ts-mode-indent-offset 4)
-  (setq tab-width 4)
-  :config
-  (reformatter-define go-format
-    :program "gofmt"
-    :args '("/dev/stdin"))
-  )
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
+(require 'rust-mode)
 
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -87,10 +75,10 @@
 		  t)))
 (setq-default electric-pair-preserve-balance 1)
 
-;; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-;; (setq electric-pair-inhibit-predicate
-;; 	(lambda (c)
-;; 	  (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
+(setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+(setq electric-pair-inhibit-predicate
+	(lambda (c)
+	  (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
@@ -98,8 +86,8 @@
 (set-face-background 'default' "black")
 (set-face-foreground 'default' "white")
 
-(setq default-tab-width 4)
-(setq-default indent-tabs-mode t)
+;;(setq default-tab-width 4)
+;;(setq-default indent-tabs-mode t)
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
 (setq-default fill-column 79)
@@ -130,7 +118,6 @@ by using nxml's indentation rules."
     (message "Ah, much better!"))
 
 (require 'css-mode)
-(require 'doctest-mode)
 (require 'rst)
 ;; (require 'auto-complete-config)
 (require 'dirtree)
@@ -142,8 +129,6 @@ by using nxml's indentation rules."
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
-
-(require 'column-marker)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -179,31 +164,6 @@ by using nxml's indentation rules."
 (setq auto-mode-alist
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 
-
-(require 'python-mode)
-
-;; Load python-mode and other complementary tools
-;;(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-;;(autoload 'python-mode "python-mode" "Python editing mode." t)
-;;(setq interpreter-mode-alist(cons '("python" . python-mode)
-;;				  interpreter-mode-alist))
-
-;;(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
-
-;; (add-hook 'python-mode-hook
-;; 	  (lambda ()
-;; 	    (setq indent-tabs-mode t)
-;; 	    (setq python-indent 8)
-;; 	    (setq tab-width 4)))
-
-;; (require 'flycheck-pyflakes)
-;; (add-hook 'python-mode-hook 'flycheck-mode)
-;; (add-hook 'python-mode-hook 'tabify (point-min) (point-max))
-;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-;; (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-
-;; (require 'blacken)
-;; (add-hook 'python-mode-hook 'blacken-mode)
 
 (cond ((fboundp 'global-font-lock-mode)
        ;; Turn on font-lock in all modes that support it
