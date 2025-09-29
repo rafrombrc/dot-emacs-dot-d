@@ -23,5 +23,7 @@
 			      tabbar
 			      xml-format
                               git-gutter
+			      pyvenv
+			      treemacs
 			      ))
 (package-initialize)

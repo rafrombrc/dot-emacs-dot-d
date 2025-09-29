@@ -30,10 +30,6 @@
          (python-ts-mode . outline-indent-minor-mode))
   :custom (outline-indent-ellipsis " ▼ "))
 
-(require 'python-mode)
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 (defun set-python-tabs ()
      (setq tab-width 4)
      (setq python-indent-offset 4)
@@ -41,12 +37,12 @@
      (setq py-indent-tabs-mode t))
 (add-hook 'python-mode-hook 'set-python-tabs)
 (add-hook 'python-mode-hook 'tabify (point-min) (point-max))
+(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
 (require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
 (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-(add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
+
 (require 'blacken)
 (add-hook 'python-mode-hook 'blacken-mode)
 
@@ -67,18 +63,18 @@
 
 (global-auto-revert-mode)
 
-(electric-pair-mode)
-(setq-default electric-pair-inhibit-predicate
-	      (lambda (c)
-		(if (looking-at "[ \n\t]")
-		    (electric-pair-default-inhibit c)
-		  t)))
-(setq-default electric-pair-preserve-balance 1)
+;; (electric-pair-mode)
+;; (setq-default electric-pair-inhibit-predicate
+;; 	      (lambda (c)
+;; 		(if (looking-at "[ \n\t]")
+;; 		    (electric-pair-default-inhibit c)
+;; 		  t)))
+;; (setq-default electric-pair-preserve-balance 1)
 
-(setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-(setq electric-pair-inhibit-predicate
-	(lambda (c)
-	  (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
+;; (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+;; (setq electric-pair-inhibit-predicate
+;; 	(lambda (c)
+;; 	  (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 
 (setq default-frame-alist '((font . "7x14")))
 (set-background-color "black")
@@ -136,9 +132,16 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-backends
-   '(company-bbdb company-semantic company-cmake company-capf company-clang company-files
-				  (company-capf company-dabbrev-code company-gtags company-etags company-keywords)
-				  company-oddmuse company-dabbrev))
+   '(company-bbdb company-semantic company-cmake company-capf company-clang
+		  company-files
+		  (company-capf company-dabbrev-code company-gtags
+				company-etags company-keywords)
+		  company-oddmuse company-dabbrev))
+ '(package-selected-packages
+   '(blacken company desktop dirtree flycheck flycheck-pyflakes git-gutter
+	     go-autocomplete lua-mode magit markdown-mode neotree
+	     outline-indent popup python-mode pyvenv rust-mode tabbar
+	     xml-format yaml-mode))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
@@ -163,7 +166,6 @@ by using nxml's indentation rules."
       (cons '("\\.js$" . javascript-mode) auto-mode-alist))
 (setq auto-mode-alist
       (cons '("\\.json$" . javascript-mode) auto-mode-alist))
-
 
 (cond ((fboundp 'global-font-lock-mode)
        ;; Turn on font-lock in all modes that support it
