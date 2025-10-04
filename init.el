@@ -48,6 +48,12 @@
 
 (require 'rust-mode)
 
+(require 'elixir-ts-mode)
+(setq auto-mode-alist
+      (cons '("\\.ex$" . elixir-ts-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.exs$" . elixir-ts-mode) auto-mode-alist))
+
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
