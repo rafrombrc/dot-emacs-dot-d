@@ -11,3 +11,4 @@ elpa/*
 /transient/
 /tree-sitter/
 /places
+eln-cache/*

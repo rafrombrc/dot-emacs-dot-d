@@ -30,6 +30,9 @@
          (python-ts-mode . outline-indent-minor-mode))
   :custom (outline-indent-ellipsis " ▼ "))
 
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)))
+
 (defun set-python-tabs ()
      (setq tab-width 4)
      (setq python-indent-offset 4)
@@ -160,6 +163,12 @@ by using nxml's indentation rules."
       (cons '("\\.pt$" . html-mode) auto-mode-alist))
 (setq auto-mode-alist
       (cons '("\\.mako$" . html-mode) auto-mode-alist))
+
+(setq auto-mode-alist
+      (cons '("\\.yml" . yaml-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.yaml" . yaml-mode) auto-mode-alist))
+
 
 ;; Associate .rst and .rest extensions w/ rst-mode
 (setq auto-mode-alist
