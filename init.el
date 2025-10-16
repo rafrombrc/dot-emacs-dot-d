@@ -77,6 +77,33 @@
   :after eglot
   :config (eglot-booster-mode))
 
+(use-package corfu
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  :init
+
+  ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
+  ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
+  ;; variable `global-corfu-modes' to exclude certain modes.
+  (global-corfu-mode)
+
+  ;; Enable optional extension modes:
+  ;; (corfu-history-mode)
+  ;; (corfu-popupinfo-mode)
+  )
+
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
@@ -85,10 +112,7 @@
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\C-]" 'help-for-help)
 (global-set-key (kbd "C-/") 'comment-line)
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<tab>") 'company-complete)
-  (define-key company-active-map (kbd "ESC") 'company-abort))
+(global-set-key (kbd "ESC C-<tab>") 'completion-at-point)
 
 (global-auto-revert-mode)
 
@@ -160,14 +184,7 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-backends
-   '(company-bbdb company-semantic company-cmake company-capf company-clang
-		  company-files
-		  (company-capf company-dabbrev-code company-gtags
-				company-etags company-keywords)
-		  company-oddmuse company-dabbrev))
  '(package-selected-packages
-   '(blacken company desktop dirtree flycheck flycheck-pyflakes git-gutter
    '(blacken desktop dirtree eglot-booster flycheck flycheck-pyflakes git-gutter
 	     go-autocomplete lua-mode magit markdown-mode neotree
 	     outline-indent popup python-mode pyvenv rust-mode tabbar

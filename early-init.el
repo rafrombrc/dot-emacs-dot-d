@@ -6,7 +6,6 @@
   ;; packages to have installed
   package-selected-packages '(
 			      blacken
-			      company
 			      desktop
 			      dirtree
 			      flycheck
@@ -25,5 +24,6 @@
                               git-gutter
 			      pyvenv
 			      treemacs
+			      corfu
 			      ))
 (package-initialize)
