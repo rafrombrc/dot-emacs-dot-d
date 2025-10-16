@@ -35,11 +35,11 @@
 
 (defun set-python-tabs ()
      (setq tab-width 4)
-     (setq python-indent-offset 4)
-     (setq indent-tabs-mode t)
-     (setq py-indent-tabs-mode t))
+     ; (setq indent-tabs-mode t)
+     ; (setq py-indent-tabs-mode t)
+     (setq python-indent-offset 4))
 (add-hook 'python-mode-hook 'set-python-tabs)
-(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
+;(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
 (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
 (require 'flycheck-pyflakes)
