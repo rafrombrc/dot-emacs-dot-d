@@ -51,11 +51,31 @@
 
 (require 'rust-mode)
 
-(require 'elixir-ts-mode)
-(setq auto-mode-alist
-      (cons '("\\.ex$" . elixir-ts-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.exs$" . elixir-ts-mode) auto-mode-alist))
+(use-package
+  eglot
+  :ensure nil
+  :config (add-to-list 'eglot-server-programs '(elixir-ts-mode "expert")))
+
+(use-package
+ elixir-ts-mode
+ :hook (elixir-ts-mode . eglot-ensure)
+ (elixir-ts-mode
+  .
+  (lambda ()
+    (push '(">=" . ?\u2265) prettify-symbols-alist)
+    (push '("<=" . ?\u2264) prettify-symbols-alist)
+    (push '("!=" . ?\u2260) prettify-symbols-alist)
+    (push '("==" . ?\u2A75) prettify-symbols-alist)
+    (push '("=~" . ?\u2245) prettify-symbols-alist)
+    (push '("<-" . ?\u2190) prettify-symbols-alist)
+    (push '("->" . ?\u2192) prettify-symbols-alist)
+    (push '("<-" . ?\u2190) prettify-symbols-alist)
+    (push '("|>" . ?\u25B7) prettify-symbols-alist)))
+ (before-save . eglot-format))
+
+(use-package eglot-booster
+  :after eglot
+  :config (eglot-booster-mode))
 
 (setq history-length 250)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -148,9 +168,13 @@ by using nxml's indentation rules."
 		  company-oddmuse company-dabbrev))
  '(package-selected-packages
    '(blacken company desktop dirtree flycheck flycheck-pyflakes git-gutter
+   '(blacken desktop dirtree eglot-booster flycheck flycheck-pyflakes git-gutter
 	     go-autocomplete lua-mode magit markdown-mode neotree
 	     outline-indent popup python-mode pyvenv rust-mode tabbar
 	     xml-format yaml-mode))
+ '(package-vc-selected-packages
+   '((eglot-booster :vc-backend Git :url
+		    "https://github.com/jdtsmith/eglot-booster")))
  '(safe-local-variable-values '((encoding . utf8)))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
