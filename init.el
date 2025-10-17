@@ -155,7 +155,6 @@ by using nxml's indentation rules."
 
 (require 'css-mode)
 (require 'rst)
-;; (require 'auto-complete-config)
 (require 'dirtree)
 
 (require 'markdown-mode)
