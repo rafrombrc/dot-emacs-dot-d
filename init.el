@@ -12,6 +12,10 @@
   (package-refresh-contents))
 (package-install-selected-packages)
 
+(require 'exec-path-from-shell)
+(dolist (var '("SSH_AUTH_SOCK"))
+  (add-to-list 'exec-path-from-shell-variables var))
+
 (require 'column-marker)
 
 (require 'desktop)

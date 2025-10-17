@@ -5,6 +5,7 @@
                      ("melpa" . "https://melpa.org/packages/"))
   ;; packages to have installed
   package-selected-packages '(
+			      exec-path-from-shell
 			      blacken
 			      desktop
 			      dirtree
@@ -14,7 +15,6 @@
 			      lua-mode
 			      magit
 			      markdown-mode
-			      neotree
 			      outline-indent
 			      popup
 			      python-mode
