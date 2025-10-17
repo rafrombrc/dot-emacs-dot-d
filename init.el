@@ -103,7 +103,7 @@
 
 (global-auto-revert-mode)
 
-;; (electric-pair-mode)
+(electric-pair-mode)
 ;; (setq-default electric-pair-inhibit-predicate
 ;; 	      (lambda (c)
 ;; 		(if (looking-at "[ \n\t]")
