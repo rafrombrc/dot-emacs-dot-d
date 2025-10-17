@@ -123,7 +123,6 @@
 (set-face-foreground 'default' "white")
 
 ;;(setq default-tab-width 4)
-;;(setq-default indent-tabs-mode t)
 (setq-default transient-mark-mode t)
 (setq-default auto-fill-mode t)
 (setq-default fill-column 79)
