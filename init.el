@@ -8,7 +8,6 @@
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
 
-;; (setq package-check-signature nil)
 (unless package-archive-contents
   (package-refresh-contents))
 (package-install-selected-packages)
@@ -36,11 +35,8 @@
 
 (defun set-python-tabs ()
      (setq tab-width 4)
-     ; (setq indent-tabs-mode t)
-     ; (setq py-indent-tabs-mode t)
      (setq python-indent-offset 4))
 (add-hook 'python-mode-hook 'set-python-tabs)
-;(add-hook 'python-mode-hook 'tabify (point-min) (point-max))
 (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
 (require 'flycheck-pyflakes)
