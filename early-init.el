@@ -20,6 +20,7 @@
 			      rust-mode
 			      tabbar
 			      xml-format
+			      yaml-mode
                               git-gutter
 			      pyvenv
 			      treemacs
