@@ -1,5 +1,6 @@
 (setq exec-path (append exec-path '("/usr/local/bin")))
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'hyper)
 
@@ -11,10 +12,6 @@
 (unless package-archive-contents
   (package-refresh-contents))
 (package-install-selected-packages)
-
-(require 'exec-path-from-shell)
-(dolist (var '("SSH_AUTH_SOCK"))
-  (add-to-list 'exec-path-from-shell-variables var))
 
 (require 'column-marker)
 

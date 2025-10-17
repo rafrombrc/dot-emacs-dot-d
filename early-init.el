@@ -5,7 +5,6 @@
                      ("melpa" . "https://melpa.org/packages/"))
   ;; packages to have installed
   package-selected-packages '(
-			      exec-path-from-shell
 			      blacken
 			      desktop
 			      dirtree
