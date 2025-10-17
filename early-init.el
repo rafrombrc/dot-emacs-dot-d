@@ -24,5 +24,6 @@
 			      pyvenv
 			      treemacs
 			      corfu
+			      eglot
 			      ))
 (package-initialize)

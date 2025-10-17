@@ -53,6 +53,12 @@
   :ensure nil
   :config (add-to-list 'eglot-server-programs '(elixir-ts-mode "expert")))
 
+(use-package eglot-booster
+  :vc (:url "https://github.com/jdtsmith/eglot-booster"
+	    :branch "main")
+  :after eglot
+  :config (eglot-booster-mode))
+
 (use-package
  elixir-ts-mode
  :hook (elixir-ts-mode . eglot-ensure)
@@ -69,10 +75,6 @@
     (push '("<-" . ?\u2190) prettify-symbols-alist)
     (push '("|>" . ?\u25B7) prettify-symbols-alist)))
  (before-save . eglot-format))
-
-(use-package eglot-booster
-  :after eglot
-  :config (eglot-booster-mode))
 
 (use-package corfu
   :init
@@ -166,11 +168,7 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(blacken desktop dirtree eglot-booster flycheck flycheck-pyflakes git-gutter
-	     go-autocomplete lua-mode magit markdown-mode neotree
-	     outline-indent popup python-mode pyvenv rust-mode tabbar
-	     xml-format yaml-mode))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((eglot-booster :vc-backend Git :url
 		    "https://github.com/jdtsmith/eglot-booster")))
